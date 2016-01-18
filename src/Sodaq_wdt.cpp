@@ -151,6 +151,23 @@ void sodaq_wdt_reset()
 #endif
 }
 
+void sodaq_wdt_safe_delay(uint32_t ms)
+{
+  // Delay step size
+  uint32_t delay_step = 10;
+
+  // Loop through and reset between steps
+  while (ms > delay_step) {
+    sodaq_wdt_reset();
+    delay(delay_step);
+    ms -= delay_step;
+  }
+
+  // Delay for the remainder
+  sodaq_wdt_reset();
+  delay(ms);
+}
+
 #ifdef ARDUINO_ARCH_AVR
 
 // AVR WDT ISR

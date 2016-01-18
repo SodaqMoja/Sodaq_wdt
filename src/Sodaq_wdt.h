@@ -52,6 +52,8 @@ void sodaq_wdt_disable();
 
 void sodaq_wdt_reset();
 
+void sodaq_wdt_safe_delay(uint32_t ms);
+
 extern volatile bool sodaq_wdt_flag;
 
 #endif /* SODAQ_WDT_H_ */
