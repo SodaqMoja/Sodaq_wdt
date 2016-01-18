@@ -15,9 +15,8 @@
 
 #endif
 
-// Length of LED flash, longer flash periods may 
-// cause resets with shorter WDT reset periods
-#define LED_FLASH_MS 10
+// Length of LED flash
+#define LED_FLASH_MS 100
 
 void setup() 
 {
@@ -60,7 +59,7 @@ void loop()
 
     // Flash LED
     digitalWrite(WDT_LED, HIGH);
-    delay(LED_FLASH_MS);
+    sodaq_wdt_safe_delay(LED_FLASH_MS);
     digitalWrite(WDT_LED, LOW);
   }
 
@@ -105,7 +104,7 @@ void systemSleep()
 
     // Power off LED after sleep
     digitalWrite(SLEEP_LED, LOW);
-    delay(LED_FLASH_MS);
+    sodaq_wdt_safe_delay(LED_FLASH_MS);
   }
   sei();
 
@@ -127,13 +126,10 @@ void systemSleep()
     
     // SAMD sleep
     __WFI();
-  
-    // Enable USB
-    USBDevice.attach();
     
     // Power off LED after sleep
     digitalWrite(SLEEP_LED, LOW);
-    delay(LED_FLASH_MS);
+    sodaq_wdt_safe_delay(LED_FLASH_MS);
   }
   
 #endif
