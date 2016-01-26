@@ -7,8 +7,31 @@
 
 #endif
 
+/*
+  To avoid naming conflicts with 'avr/wdt.h', the 'sodaq_' prefix has
+  been attached to these methods. e.g. 'sodaq_wdt_reset()'.
+
+  There is an enumeration, called 'wdt_period', of the possible interrupt 
+  periods ranging from 15ms to 8s. The SAMD also supports an 8ms period, but 
+  this has been omitted as the AVR platform doesn't. Some of the shorter 
+  periods are an approximate equivalent e.g.AVR = 120ms SAMD = 125ms.
+
+  On the SAMD platform this library uses 'Normal Mode' with the 'Early Warning' 
+  interrupt enabled. The 'Early Warning' interrupt is set to the specified 
+  period, and the board reset to twice that. So if a period of 1s is specified 
+  the interrupt will fire after 1s and the board will reset 1s afterwards 
+  (if 'sodaq_wdt_reset()' is not called before).
+
+  Because the board reset period is set to twice that of the interrupt period, 
+  the 16s period on the SAMD board is used when an 8s period is specified.
+
+  A safe delay method, 'sodaq_wdt_safe_delay(ms)', has been added. This method 
+  will block and only return after the specified number of milliseconds have 
+  elapsed. It calls 'delay(ms)' in 10ms increments, and calls 
+  'sodaq_wdt_reset()' between.
+*/
+
 // Approximate periods supported by both platforms
-// The SAMD also supports 8ms and 16s.
 enum wdt_period : uint8_t 
 {
 #ifdef ARDUINO_ARCH_AVR
