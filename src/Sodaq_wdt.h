@@ -32,6 +32,7 @@
 */
 
 // Approximate periods supported by both platforms
+// The SAMD also supports 8ms and 16s.
 enum wdt_period : uint8_t 
 {
 #ifdef ARDUINO_ARCH_AVR
