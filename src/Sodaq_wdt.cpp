@@ -144,7 +144,8 @@ void sodaq_wdt_reset()
 
 #elif ARDUINO_ARCH_SAMD
 
-  // Reset counter and wait for synchronisation
+  // Wait if currently syncing, reset counter and wait for synchronisation
+  while (WDT->STATUS.reg & WDT_STATUS_SYNCBUSY);
   WDT->CLEAR.reg = WDT_CLEAR_CLEAR_KEY;
   while (WDT->STATUS.reg & WDT_STATUS_SYNCBUSY);
   
