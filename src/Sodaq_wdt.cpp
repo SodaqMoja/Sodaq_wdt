@@ -155,17 +155,15 @@ void sodaq_wdt_safe_delay(uint32_t ms)
 {
   // Delay step size
   uint32_t delay_step = 10;
+  uint32_t endMS = millis() + ms;
 
   // Loop through and reset between steps
-  while (ms > delay_step) {
+  while (millis() < endMS) {
     sodaq_wdt_reset();
-    delay(delay_step);
-    ms -= delay_step;
-  }
 
-  // Delay for the remainder
-  sodaq_wdt_reset();
-  delay(ms);
+    int32_t remaining = (endMS - millis());
+    delay((remaining  > delay_step) ? delay_step : remaining);
+  }
 }
 
 #ifdef ARDUINO_ARCH_AVR
