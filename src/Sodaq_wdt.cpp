@@ -103,9 +103,9 @@ void sodaq_wdt_enable(wdt_period period)
     WDT->INTENSET.reg = WDT_INTENSET_EW;
     
     // Enable interrupt vector for WDT
-    // Priority is set to 0x00, the highest
+    // Priority is set to 0x03, the lowest
     NVIC_EnableIRQ(WDT_IRQn);
-    NVIC_SetPriority(WDT_IRQn, 0x00);
+    NVIC_SetPriority(WDT_IRQn, 0x03);
   }
   
 #endif
